@@ -1,44 +1,9 @@
 #-*- mode: ruby -*-
 # vi: set ft=ruby :
 
-#require 'getoptlong'
 #require 'rbconfig'
 
-#opts = GetoptLong.new(
- # [ '--vm', GetoptLong::REQUIRED_ARGUMENT]
-#)
-
-#opts.ordering=(GetoptLong::REQUIRE_ORDER)
-
-#vm=''
-
-#opts.each do |opt, arg|
- # case opt
-  #  when '--vm'
-   #   unless arg == 'virtualbox' || arg == 'vmware'
-    #    abort("На данный момент поддерживается только --vm=virtualbox и --vm==vmware")
-     # end
-      #vm=arg
-  #end
-#end
-
-def os
-  @os ||= (
-    host_os = RbConfig::CONFIG['host_os']
-    case host_os
-      when /mswin|msys|mingw|cygwin|bccwin|wince|emc/
-        :windows
-      when /darwin|mac os/
-        :macosx
-      when /linux/
-        :linux
-      when /solaris|bsd/
-        :unix
-      else
-        raise Error::WebDriverError, "unknown os: #{host_os.inspect}"
-    end
-  )
-end
+require_relative 'get_os'
 
 Vagrant.configure("2") do |config|
 

@@ -50,18 +50,6 @@
     - name: Install ipmininet
       ansible.builtin.shell: |
         . NetFront/venv/bin/activate
-        if [ -d "ipmininet" ]; then
-          sudo rm -rf ipmininet
-        fi
-
-        # Если есть OpenFlow, то эта директория уже существует и 
-        # по ней ipmininet определяет скачан ли mininet
-
-        if [ ! -d "/opt/mininet_dependencies" ]; then
-          sudo mkdir /opt/mininet_dependencies
-        fi
-
-        pip3 install --upgrade git+https://github.com/cnp3/ipmininet.git@v1.1
-
+        . vagrant/ipmininet_install.sh
       args:
         chdir: /vagrant/
