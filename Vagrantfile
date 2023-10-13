@@ -46,7 +46,7 @@ Vagrant.configure("2") do |config|
     box.vm.box = "bento/ubuntu-22.04"
     box.vm.hostname = 'miminethost'
     # Переброска стандартного порта, на котором запускается Flask при локальном деплое
-    box.vm.network "forwarded_port", guest: 5001, host: 5001
+    box.vm.network "forwarded_port", guest: 5000, host: 8000
 
     # Shared folder - текущая, для гостевой ---/vagrant
     if os == :windows
