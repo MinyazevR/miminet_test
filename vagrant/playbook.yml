@@ -1,0 +1,67 @@
+- hosts: all
+  tasks:
+    - name: Install packages required for mininet to work
+      ansible.builtin.apt:
+        pkg:
+          - curl
+          - dnsutils
+          - ifupdown
+          - iproute2
+          - iptables
+          - iputils-ping
+          - openvswitch-switch
+          - openvswitch-testcontroller
+          - mininet
+          - tcpdump
+          - git
+          - python3-pip
+          - python3-setuptools
+          - python3-venv
+        force_apt_get: true
+        update_cache: true
+        install_recommends: false
+        state: latest
+      become: true
+      become_method: sudo
+      
+    - name: Start openvswitch-switch
+      ansible.builtin.shell: |
+        sudo service openvswitch-switch start
+        
+        
+    - name: Clone NetFront
+      ansible.builtin.shell: |
+        git clone https://github.com/i1ya/NetFront.git
+      args:
+        chdir: /vagrant/
+        
+    - name: Create env
+      ansible.builtin.shell:
+        python3 -m venv venv
+      args:
+        chdir: /vagrant/NetFront/
+        
+    - name: Install requirements
+      ansible.builtin.pip:
+        requirements: req.txt
+        virtualenv: venv
+        chdir: /vagrant/NetFront/
+        
+    - name: Install ipmininet
+      ansible.builtin.shell: |
+        . NetFront/venv/bin/activate
+        if [ -d "ipmininet" ]; then
+          sudo rm -rf ipmininet
+        fi
+
+        # Если есть OpenFlow, то эта директория уже существует и 
+        # по ней ipmininet определяет скачан ли mininet
+
+        if [ ! -d "/opt/mininet_dependencies" ]; then
+          sudo mkdir /opt/mininet_dependencies
+        fi
+
+        pip3 install --upgrade git+https://github.com/cnp3/ipmininet.git@v1.1
+
+      args:
+        chdir: /vagrant/
