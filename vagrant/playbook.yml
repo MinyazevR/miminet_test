@@ -3,6 +3,12 @@
     - name: Install packages required for mininet to work
       ansible.builtin.apt:
         pkg:
+          - libyang-dev
+          - gcc
+          - libjson-c-dev
+          - python3-dev
+          - bridge-utils
+          - libreadline-dev
           - curl
           - dnsutils
           - ifupdown
@@ -11,7 +17,6 @@
           - iputils-ping
           - openvswitch-switch
           - openvswitch-testcontroller
-          - bridge-utils
           - mininet
           - tcpdump
           - git
@@ -47,6 +52,13 @@
         requirements: req.txt
         virtualenv: venv
         chdir: /vagrant/NetFront/
+        
+    - name: Move files
+      ansible.builtin.shell: |
+        mv simulate.py /vagrant/NetFront/simulate.py
+        mv pkt_parser.py /vagrant/NetFront/pkt_parser.py
+      args:
+        chdir: /vagrant/
         
     - name: Install ipmininet
       ansible.builtin.shell: |
