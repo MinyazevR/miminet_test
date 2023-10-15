@@ -11,6 +11,7 @@
           - iputils-ping
           - openvswitch-switch
           - openvswitch-testcontroller
+          - bridge-utils
           - mininet
           - tcpdump
           - git
